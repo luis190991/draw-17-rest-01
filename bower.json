@@ -1,0 +1,27 @@
+{
+  "name": "mired",
+  "description": "Aplicación de red social sin sentido.",
+  "main": "",
+  "authors": [
+    "Luis Antonio Ramirez Martinez <luis@blacklabs.mx>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "red",
+    "social",
+    "npm",
+    "bower",
+    "express"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
