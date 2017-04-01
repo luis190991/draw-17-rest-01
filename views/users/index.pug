@@ -12,13 +12,16 @@ block content
           th Primer Apellido
           th Segundo Apellido
           th
-            a(class="btn btn-success", href='/users/blank') Nuevo
+            a(class="btn btn-success", href='/users/new') Nuevo
         tbody
-          tr
-            td luramirez
-            td Luis
-            td Ramirez
-            td Martinez
-            td
-              a(class="btn btn-primary", href='#') Editar
-              a(class="btn btn-danger", href='#') Eliminar
+          each user in users
+            tr
+              td #{user.usuario}
+              td #{user.nombre}
+              td #{user.primerApellido}
+              td #{user.segundoApellido}
+              td
+                a(class="btn btn-primary", href=`/users/${user.id}`) Ver
+                a(class="btn btn-warning", href=`/users/${user.id}/edit`) Editar
+                form(name='delete-user', id='form-delete-user', method='POST', action=`/users/${user.id}?_method=DELETE`)
+                  input(type='submit', class="btn btn-danger", value='Eliminar') 

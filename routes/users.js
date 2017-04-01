@@ -1,21 +1,28 @@
-var express = require('express');
-var router = express.Router();
+'use strict'
+
+const express = require('express');
+const userController = require('../controllers/user');
+const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.render('users/index', {});
-});
+router.get('/', userController.index);
 
-router.get('/blank', (req, res, next) =>{
-  res.render('users/blank', {});
-});
+router.get('/new', userController.newUser);
 
-router.post('/create',(req, res, next) =>{
-  console.log(req.body.usuario);
-  console.log(req.body.nombre);
-  console.log(req.body.primerApellido);
-  console.log(req.body.segundoApellido);
+router.post('/',userController.create);
 
-});
+router.get('/:id', userController.show );
+
+router.get('/:id/edit', userController.edit);
+
+router.put('/:id', userController.update );
+
+router.delete('/:id', userController.destroy );
+
+router.use('/', userController.index);
+
+
+
+
 
 module.exports = router;
