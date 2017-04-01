@@ -21,7 +21,7 @@ block content
               td #{user.primerApellido}
               td #{user.segundoApellido}
               td
-                a(class="btn btn-primary", href=`/users/${user.id}`) Ver
-                a(class="btn btn-warning", href=`/users/${user.id}/edit`) Editar
-                form(name='delete-user', id='form-delete-user', method='POST', action=`/users/${user.id}?_method=DELETE`)
-                  input(type='submit', class="btn btn-danger", value='Eliminar') 
+                a(class="btn btn-primary", href=`/users/${user._id}`) Ver
+                a(class="btn btn-warning", href=`/users/${user._id}/edit`) Editar
+                form(name='delete-user', id='form-delete-user', method='POST', action=`/users/${user._id}?_method=DELETE`)
+                  input(type='submit', class="btn btn-danger", value='Eliminar')

@@ -7,6 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('mired:server');
 var http = require('http');
+var mongoose = require('mongoose');
+var log4js = require('log4js');
+
+
+var logger = log4js.getLogger();
 
 /**
  * Get port from environment and store in Express.
@@ -16,16 +21,26 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP server and init mongoose
  */
 
 var server = http.createServer(app);
+
+mongoose.connect('mongodb://localhost:27017/mi_red_social',(err, res)=>{
+  if(err){
+    logger.error("No se pudo extablecer una conexion con el Servicio de Mongodb.");
+    throw err;
+  }else{
+    server.listen(port,()=>{
+      logger.info("Conexión Exitosa a la base de datos.");
+    });
+  }
+});
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
