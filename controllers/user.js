@@ -2,12 +2,20 @@
 const express = require('express');
 const User = require('../models/user');
 const log4js = require('log4js');
+const bcrypt = require('bcrypt-nodejs');
 const logger = log4js.getLogger();
+
 
 function index(req, res, next) {
   logger.debug("INDEX");
+
+  var user ="";
+  if(req.session.user){
+    user = req.session.user;
+  }
   User.find({},(err, users)=>{
-    res.render('users/index', {'users':users, 'status': res.locals.status});
+    res.render('users/index', {'users':users, 'user':user,
+     'status': res.locals.status});
   });
 }
 
@@ -27,10 +35,7 @@ function newUser(req, res, next){
 function create(req, res, next){
   logger.debug("CREATE");
 
-  console.log(req.body.usuario);
-  console.log(req.body.nombre);
-  console.log(req.body.primerApellido);
-  console.log(req.body.segundoApellido);
+
 
   let user = new User({
     usuario: req.body.usuario,
@@ -40,23 +45,41 @@ function create(req, res, next){
     password: req.body.password
   });
 
-  let code = '';
-  let message = '';
-  user.save((err, object)=>{
-    if(err){
-      code = 'danger';
-      message = 'No se ha podido guardar el usuario.';
-    }else{
-      code = 'success';
-      message = 'Usuario creado Correctamente.';
-    }
+  if(req.body.password){
+    bcrypt.hash(req.body.password,null, null, (err, hash)=>{
+      let code = '';
+      let message = '';
 
-    res.locals.status = {
-      code:code,
-      message:message
-    };
-    next();
-  });
+        if(err){
+          code = 'danger';
+          message = 'No se ha podido guardar el usuario.';
+          res.locals.status = {
+            code:code,
+            message:message
+          };
+          next();
+        }else{
+          user.password = hash;
+          user.save((err, object)=>{
+            if(err){
+              code = 'danger';
+              message = 'No se ha podido guardar el usuario.';
+            }else{
+              code = 'success';
+              message = 'Usuario creado Correctamente.';
+            }
+
+            res.locals.status = {
+              code:code,
+              message:message
+            };
+            next();
+          });
+        }
+    });
+  }
+
+
 }
 
 function show(req, res, next){
